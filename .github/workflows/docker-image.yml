@@ -14,11 +14,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Node Lint And Format
-      uses: beauwilliams/run-node-formatter@latest
-    - run: npm run lint
-    
-    
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)

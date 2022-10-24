@@ -1,0 +1,24 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Node Lint And Format
+      uses: beauwilliams/run-node-formatter@latest
+    - run: npm run lint
+
+    - name: Node test
+      uses: beauwilliams/run-node-formatter@latest
+    - run: npm t
