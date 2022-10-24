@@ -19,8 +19,6 @@ jobs:
     - name: Node Lint And Format
       uses: beauwilliams/run-node-formatter@latest
     - run: npm run lint
-
-    - name: Node test
     - run: npm t
 
     - name: Build the Docker image
