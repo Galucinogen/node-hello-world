@@ -6,5 +6,5 @@ WORKDIR /app
 COPY package.json /app
 COPY index.js /app
 RUN npm install
-EXPOSE 80
+EXPOSE 3333
 CMD [ "npm", "start" ]
