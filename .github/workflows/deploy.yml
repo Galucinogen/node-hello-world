@@ -30,9 +30,3 @@ jobs:
       - name: Node Lint And Format
       - run: npm t
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build the Docker image
-      - run: docker build . --file Dockerfile --tag my-image-name:$(git log -1 --pretty=format:%h)
