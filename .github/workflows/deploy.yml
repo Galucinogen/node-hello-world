@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: CI
 
 on:
   push:
@@ -8,18 +8,31 @@ on:
 
 jobs:
 
-  build:
-
+  lint:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
-
-
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: "14.x"
     - name: Node Lint And Format
-      uses: beauwilliams/run-node-formatter@latest
     - run: npm run lint
-    - run: npm t
 
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "14.x"
+      - name: Node Lint And Format
+      - run: npm t
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(git log -1 --pretty=format:%h)
