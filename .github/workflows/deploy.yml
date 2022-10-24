@@ -1,32 +1,17 @@
-name: CI
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+name: Checks
+on: push
 jobs:
-
   lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: "14.x"
-    - name: Node Lint And Format
-    - run: npm run lint
-
+      - uses: actions/checkout@v3
+      - run: npm install
+      - run: npm run lint
   test:
+    name: Test (jest)
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: "14.x"
-    - name: Node Lint And Format
-    - run: npm t
-
+      - uses: actions/checkout@v3
+      - run: npm install
+      - run: npm t
