@@ -49,5 +49,5 @@ jobs:
           script: |
             echo "IMAGE_TAG is " ${{steps.login-ecr.outputs.registry}}
             echo "IMAGE_TAG is " ${{steps.build-push.outputs.IMAGE_TAG}}
-            sed -i "s/test-task:.*/test-task:$IMAGE_TAG/" docker-compose.yml
+            sed -i "s|test-task:.|test-task:$IMAGE_TAG|" docker-compose.yml
             sudo docker-compose up -d
