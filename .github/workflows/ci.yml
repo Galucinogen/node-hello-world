@@ -35,3 +35,14 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$(git log -1 --pretty=format:%h) .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$(git log -1 --pretty=format:%h)
+
+      - name: deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            tag=`git log -1 --pretty=format:%h`; sed -i "s/test-task:.*/test-task:$tag/" docker-compose.yml
+            sudo docker-compose up -d
