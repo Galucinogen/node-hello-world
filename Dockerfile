@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log
 
+RUN adduser nginx --disabled-password --gecos "nginx" --no-create-home
 RUN mkdir -p /app
 WORKDIR /app
 COPY package.json .
