@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
 
+
+env:
+  GIT_PR_SHA: ${{github.event.pull_request.head.sha}}
+  GIT_PR_SHA_SHORT: "${{ env.GIT_PR_SHA:0:10 }}"
+
 jobs:
   build-and-push:
     name: Build Docker image and push to repositories
@@ -34,8 +39,8 @@ jobs:
           ECR_REPOSITORY: test-task
         run: |
           IMAGE_TAG=$(git log -1 --pretty=format:%h)
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:${GIT_PR_SHA_SHORT} .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:${GIT_PR_SHA_SHORT}
 
       - name: deploy
         uses: appleboy/ssh-action@master
@@ -45,5 +50,5 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            tag=`git log -1 --pretty=format:%h`; sed -i "s/test-task:.*/test-task:$tag/" docker-compose.yml
+            tag=`git log -1 --pretty=format:%h`; sed -i "s/test-task:.*/test-task:${GIT_PR_SHA_SHORT}/" docker-compose.yml
             sudo docker-compose up -d
