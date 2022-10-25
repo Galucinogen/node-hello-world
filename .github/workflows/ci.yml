@@ -32,7 +32,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: test-task
-          IMAGE_TAG: `git log -1 --pretty=format:%h`
+          IMAGE_TAG: $(git log -1 --pretty=format:%h)
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
