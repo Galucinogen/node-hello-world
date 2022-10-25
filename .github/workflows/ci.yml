@@ -29,6 +29,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build, tag, and push image to Amazon ECR
+        id: build-push
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: test-task
@@ -45,7 +46,8 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            echo "IMAGE_TAG is $IMAGE_TAG"
+            echo "IMAGE_TAG is " ${{steps.login-ecr.outputs.registry}}
+            echo "IMAGE_TAG is " ${{steps.build-push.outputs.IMAGE_TAG}}
             env
             sed -i "s/test-task:.*/test-task:$IMAGE_TAG/" docker-compose.yml
             sudo docker-compose up -d
