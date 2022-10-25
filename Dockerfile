@@ -4,11 +4,12 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
-	&& ln -sf /dev/stderr /var/log/nginx/error.log \
+	&& ln -sf /dev/stderr /var/log/nginx/error.log
 
+RUN mkdir -p /app
 WORKDIR /app
-COPY package.json /app
-COPY index.js /app
+COPY package.json .
+COPY index.js .
 COPY files/nginx.conf /etc/nginx/
 COPY files/supervisord.conf /etc/supervisord.conf
 RUN npm install
